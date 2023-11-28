@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { loginUser } from "../api/api";
+import { loginUser as loginUserApi } from "../api/api";
 
-const Register = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
-    rePassword: "",
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -18,16 +17,9 @@ const Register = () => {
     });
   };
 
-  const registerUser = async () => {
+  const loginUser = async () => {
     try {
-      // Simple validation
-      if (formData.password !== formData.rePassword) {
-        setError("Passwords do not match!");
-        return;
-      }
-
-      // API call using Axios
-      const response = await loginUser({
+      const response = await loginUserApi({
         username: formData.username,
         password: formData.password,
       });
@@ -39,26 +31,21 @@ const Register = () => {
     } catch (error) {
       // Handle API error
       setSuccess(false);
-      setError("Something went wrong");
-      console.error(
-        "API Error:",
-        error.response ? error.response.data : error.message
-      );
+      setError("Login failed");
+      console.error("API Error:", error);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    registerUser();
+    loginUser();
   };
 
   return (
     <div className="container">
-      <h2 className="text-center">Register</h2>
+      <h2 className="text-center">Login</h2>
       {error && <div className="alert alert-danger">{error}</div>}
-      {success && (
-        <div className="alert alert-success">Registration successful!</div>
-      )}
+      {success && <div className="alert alert-success">Login successful!</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="username">Username:</label>
@@ -83,19 +70,8 @@ const Register = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="rePassword">Re-enter Password:</label>
-          <input
-            type="password"
-            id="rePassword"
-            name="rePassword"
-            value={formData.rePassword}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <button type="submit" className="btn btn-primary btn-block">
-            Register
+          <button type="submit" className="btn btn-primary btn block">
+            Login
           </button>
         </div>
       </form>
@@ -103,4 +79,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;

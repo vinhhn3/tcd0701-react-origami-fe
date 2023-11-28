@@ -1,13 +1,14 @@
 import "./App.css";
 import Navbar from "./layout/Navbar";
-import Register from "./pages/Register";
+import Login from "./pages/Login";
 
 function App() {
   return (
     <div className="App">
       <Navbar />
       <div className="container">
-        <Register />
+        {/* <Register /> */}
+        <Login />
       </div>
     </div>
   );
